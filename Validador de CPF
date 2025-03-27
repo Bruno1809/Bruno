@@ -1,0 +1,46 @@
+def validar_cpf(cpf):
+    # Remover caracteres não numéricos
+    cpf = ''.join([c for c in cpf if c.isdigit()])
+    
+    # Verificar se o CPF tem 11 dígitos
+    if len(cpf) != 11:
+        return False
+    
+    # Verificar se o CPF é uma sequência repetida (ex: 111.111.111-11)
+    if cpf == cpf[0] * 11:
+        return False
+    
+    # Validar o primeiro dígito verificador
+    soma = 0
+    for i in range(9):
+        soma += int(cpf[i]) * (10 - i)
+    primeiro_digito = (soma * 10) % 11
+    if primeiro_digito == 10 or primeiro_digito == 11:
+        primeiro_digito = 0
+    if int(cpf[9]) != primeiro_digito:
+        return False
+    
+    # Validar o segundo dígito verificador
+    soma = 0
+    for i in range(10):
+        soma += int(cpf[i]) * (11 - i)
+    segundo_digito = (soma * 10) % 11
+    if segundo_digito == 10 or segundo_digito == 11:
+        segundo_digito = 0
+    if int(cpf[10]) != segundo_digito:
+        return False
+    
+    return True
+
+def pedir_cpf():
+    while True:
+        cpf = input("Digite o CPF para validação (somente números): ")
+        
+        if validar_cpf(cpf):
+            print("CPF válido!")
+            break
+        else:
+            print("CPF inválido! Tente novamente.")
+            
+# Chama a função para pedir o CPF
+pedir_cpf()
